@@ -1,0 +1,62 @@
+# bulk water
+
+units           metal
+boundary        p p p
+atom_style      atomic
+
+neighbor        6 bin
+neigh_modify    every 1 delay 0 check no
+
+read_data	water.lmp
+mass 		1 12 # C
+mass		2 16 # O
+mass		3 1.023 # H
+
+pair_style	deepmd frozen_model.pb
+pair_coeff	* *
+
+group           C type 1
+group           O type 2
+group           H type 3
+group           mobile subtract all C
+
+
+compute         mype all pe/atom
+compute         myke all ke/atom
+
+velocity        C create 400 15481
+velocity        O create 400 26484
+velocity        H create 400 34848
+
+timestep        0.0005
+thermo_style    custom step pe ke etotal temp press vol
+thermo          100
+
+dump            1 all custom 10 water1.dump id element mass xu yu zu fx fy fz c_mype c_myke
+dump_modify     1 element C O H
+fix             1 mobile nvt temp 400 400 0.05
+run             500000
+undump 1
+
+dump            1 all custom 10 water2.dump id element mass xu yu zu fx fy fz c_mype c_myke
+dump_modify     1 element C O H
+fix             1 mobile nvt temp 400 400 0.05
+run             500000
+undump 1
+
+dump            1 all custom 10 water3.dump id element mass xu yu zu fx fy fz c_mype c_myke
+dump_modify     1 element C O H
+fix             1 mobile nvt temp 400 400 0.05
+run             500000
+undump 1
+
+dump            1 all custom 10 water4.dump id element mass xu yu zu fx fy fz c_mype c_myke
+dump_modify     1 element C O H
+fix             1 mobile nvt temp 400 400 0.05
+run             500000
+undump 1
+
+
+unfix           1
+
+

@@ -1,0 +1,9 @@
+#!/bin/bash 
+#SBATCH -J dpmd_freeze         
+#SBATCH -n 400         
+#SBATCH -N 4 
+#SBATCH -p development     
+#SBATCH -t 1:00:00 
+
+module load tacc-singularity
+singularity run --nv /work/08039/cxliang/ls6/DPMD bash freeze.sh

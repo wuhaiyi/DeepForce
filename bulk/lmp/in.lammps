@@ -1,0 +1,39 @@
+# bulk water
+
+units           metal
+boundary        p p p
+atom_style      atomic
+
+neighbor        2.0 bin
+neigh_modify    every 10 delay 0 check no
+
+read_data	water.dat
+
+pair_style	deepmd water_bulk_47000.pb
+pair_coeff  * *	
+
+velocity        all create 400.0 23456789
+
+timestep        0.0005
+thermo_style    custom step pe ke etotal temp press vol
+thermo          1
+
+dump		1 all custom 5 water_1.dump id type mass x y z fx fy fz 
+fix             1 all nvt temp 400.0 400.0 0.5
+run             500000
+undump 1
+
+dump		1 all custom 5 water_2.dump id type mass x y z fx fy fz 
+fix             1 all nvt temp 400.0 400.0 0.5
+run             500000
+undump 1
+
+dump		1 all custom 5 water_3.dump id type mass x y z fx fy fz 
+fix             1 all nvt temp 400.0 400.0 0.5
+run             500000
+undump 1
+
+dump		1 all custom 5 water_4.dump id type mass x y z fx fy fz 
+fix             1 all nvt temp 400.0 400.0 0.5
+run             500000
+undump 1
